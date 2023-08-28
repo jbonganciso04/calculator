@@ -53,8 +53,10 @@ function operate(num1, num2, operation) {
 function getNumberValue(numbersCollection) {
     for(let i = 0; i < numbersCollection.length; i++) {
         numbersCollection[i].addEventListener("click", () => {
-            temp = temp.concat(numbersCollection[i].value);
-            operandOne.textContent = temp;
+            operandOne.textContent = operandOne.textContent.concat(numbersCollection[i].value);
+            if(operation == null) {
+                operands.firstNum = null;
+            }
         })
     }
 }
@@ -62,52 +64,51 @@ function getNumberValue(numbersCollection) {
 function getOperationSymbol(operationCollection) {
     for(let i = 0; i < operationCollection.length; i++) {
         operationCollection[i].addEventListener("click", () => {
-            if (operands.firstNum == null) {
-                operandTwoDisplay.textContent = temp;
-                operands.firstNum = Number(operandTwoDisplay.textContent);
-                temp = "";
-            if(operandTwoDisplay.textContent.includes("+") || operandTwoDisplay.textContent.includes("-") || operandTwoDisplay.textContent.includes("*") || operandTwoDisplay.textContent.includes("÷")) {
-                operandTwoDisplay.textContent = operandTwoDisplay.textContent.replace(operandTwoDisplay.textContent.charAt(operandTwoDisplay.textContent.length - 1), newSymbol.trim());
-                operation = operationCollection[i].value;
+            operation = operationCollection[i].value
+            if(operands.firstNum == null) {
+                operands.firstNum = Number(operandOne.textContent);
+                operandTwoDisplay.textContent = handleChangeOfOperation(operandTwoDisplay.textContent, operationCollection[i].textContent);
+                operandOne.textContent = "";
             } else {
-                temp = `${operationCollection[i].textContent}`
-                temp = temp.trim();
-                operandTwoDisplay.textContent = operandTwoDisplay.textContent.concat(" ", temp)
-                temp = "";
-                operandOne.textContent = temp;
-                operation = operationCollection[i].value;
-            }
-            } else {
-                temp = "";
-            if(operandTwoDisplay.textContent.includes("+") || operandTwoDisplay.textContent.includes("-") || operandTwoDisplay.textContent.includes("*") || operandTwoDisplay.textContent.includes("÷")) {
-                operandTwoDisplay.textContent = operandTwoDisplay.textContent.replace(operandTwoDisplay.textContent.charAt(operandTwoDisplay.textContent.length - 1), newSymbol.trim());
-                operation = operationCollection[i].value;
-            } else {
-                temp = `${operationCollection[i].textContent}`
-                temp = temp.trim();
-                operandTwoDisplay.textContent = operandTwoDisplay.textContent.concat(" ", temp)
-                temp = "";
-                operandOne.textContent = temp;
-                operation = operationCollection[i].value;
-            }
+                operands.secondNum = Number(operandOne.textContent);
+                operandTwoDisplay.textContent = handleChangeOfOperation(operandTwoDisplay.textContent, operationCollection[i].textContent)
             }
         })
     }
 }
 
+function handleChangeOfOperation(textContent, operationText) {
+    if(textContent.includes("+") ||
+        textContent.includes("-") ||
+        textContent.includes("*") ||
+        textContent.includes("÷")
+    ) {
+        textContent = textContent.replace(textContent.charAt(textContent.length - 1), operationText.trim())
+        
+    } else {
+        textContent = operands.firstNum.toString()
+        textContent = textContent.concat(" ", operationText.trim());
+    }
+    return textContent;
+}
+
+function handleIfOperationIsNull() {
+
+}
+
 equalSign.addEventListener("click", () => {
-    operands.secondNum = Number(operandOne.textContent);
+    operands.secondNum = Number(operandOne.textContent)
     let result = operate(operands.firstNum, operands.secondNum, operation);
-    operandTwoDisplay.textContent = (result.toString());
     operands.firstNum = result;
-    temp = ""
-    operandOne.textContent = temp
+    operandTwoDisplay.textContent = operands.firstNum;
+    operandOne.textContent = "";
+    operation = null;
 })
 
 clearBtn.addEventListener("click", () => {
     operands.firstNum = null;
-    operands.secondNum = 0;
-    temp = 0;
+    operands.secondNum = "";
+    temp = "";
     operandOne.textContent = temp;
     operandTwoDisplay.textContent = "";
 
