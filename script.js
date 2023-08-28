@@ -97,9 +97,9 @@ equalSign.addEventListener("click", () => {
     numbers.secondNum = Number(operandOne.textContent);
     let result = operate(numbers.firstNum, numbers.secondNum, operator);
     console.log(result)
-    numbers.firstNum = result;
-    operandTwo.textContent = numbers.firstNum;
-    temp = 0;
+    temp2 = result;
+    operandTwo.textContent = temp2.toString();
+    temp = "";
     operandOne.textContent = temp
 })
 
