@@ -11,8 +11,51 @@ body {
     height: 100vh;
 }
 
+.calculator {
+    padding: 25px;
+}
+
 .calculator__container {
     border: 1px solid black;
-    width: 25%;
-    height: 500px;
+    width: 23%;
+    height: 550px;
+}
+
+.calculator__screen {
+    border: 1px solid black;
+    height: 100px;
+}
+
+#calculator__screen__firstNum, #calculator__screen__secondNum {
+    height: 50%;
+    display: flex;
+    justify-content: flex-end;
+    align-items: flex-end;
+    font-size: 25px;
+}
+
+.button__section {
+    margin-top: 15px;
+}
+
+.clear__delete__section {
+    display: flex;
+    justify-content: space-between;
+}
+
+.clear__delete__section > button{
+    padding: 15px 25px;
+    width: 49%;
+    height: 70px;
+}
+
+.row__of__numbers {
+    margin-top: 10px;
+    display: flex;
+    justify-content: space-between;
+}
+
+.num__or__operation__btn {
+    height: 70px;
+    width: 24%;
 }
