@@ -1,17 +1,19 @@
 let numbers = {
-    firstNum: null,
-    secondNum: null
+    firstNum: 0,
+    secondNum: 0
 }
 
 let operator = "";
 let temp = "";
-
+let temp2 = "";
+let result = 0;
 
 const operandTwo = document.getElementById("calculator__screen__firstNum");
 const operandOne = document.getElementById("calculator__screen__secondNum");
 const clearBtn = document.getElementById("clear__btn");
 const numbersCollection = document.getElementsByClassName("number");
 const operationCollection = document.getElementsByClassName("operation__symbol");
+const equalSign = document.getElementById("equals__sign");
 
 clearBtn.addEventListener("click", () => {
     
@@ -30,29 +32,36 @@ function multiply(num1, num2) {
 }
 
 function divide(num1, num2) {
-    return num1 + num2;
+    return num1 / num2;
 }
 
-function operate(operation) {
-    switch(operation) {
-        case "add":
-            add(numbers.firstNum, numbers.secondNum);
-            break;
-        case "subtract":
-            subtract(numbers.firstNum, numbers.secondNum);
-            break;
-        case "multiply":
-            multiply(numbers.firstNum, numbers.secondNum);
-            break;
-        case "divide":
-            divide(numbers.firstNum, numbers.secondNum);
+function operate(num1, num2, operation) {
+    switch(operation){
+        case "add": {
+            result = add(num1, num2);
+            return result;
+        }
+
+        case "divide": {
+            result = divide(num1, num2);
+            return result
+        }
+
+        case "multiply": {
+            result = multiply(num1, num2);
+            return result
+        }
+
+        case "subtract": {
+            result = subtract(num1, num2);
+            return result
+        }
     }
 }
 
 function getNumberValue(numbersCollection) {
     for(let i = 0; i < numbersCollection.length; i++) {
         numbersCollection[i].addEventListener("click", () => {
-            console.log(numbersCollection[i].value);
             temp = temp.concat(numbersCollection[i].value);
             operandOne.textContent = temp;
         })
@@ -64,24 +73,35 @@ function getOperationSymbol(operationCollection) {
         operationCollection[i].addEventListener("click", () => {
            if(operator == "") {
             operator = operationCollection[i].value;
-            temp = temp.concat(` ${operationCollection[i].textContent.trim()}`)
-            operandTwo.textContent = temp
-            operandOne.textContent = ""
+            numbers.firstNum = Number(temp);
+            temp2 = temp.concat(` ${operationCollection[i].textContent.trim()}`)
+            operandTwo.textContent = temp2
+            temp = "";
+            operandOne.textContent = temp;
            } else {
             operator = operationCollection[i].value;
-            replaceCharSymbolAtTemp(temp, operationCollection[i].textContent)
+            replaceCharSymbolAtTemp(temp2, operationCollection[i].textContent)
            }
         })
     }
 }
 
-function replaceCharSymbolAtTemp(temp, newSymbol) { 
-    if(temp.includes("+") || temp.includes("-") || temp.includes("*") || temp.includes("÷")) {
-        temp = temp.replace(temp.charAt(temp.length - 1), newSymbol.trim());
-        console.log("New temp is "+temp);
-        operandTwo.textContent = temp
+function replaceCharSymbolAtTemp(temp2, newSymbol) { 
+    if(temp2.includes("+") || temp2.includes("-") || temp2.includes("*") || temp2.includes("÷")) {
+        temp2 = temp2.replace(temp2.charAt(temp2.length - 1), newSymbol.trim());
+        operandTwo.textContent = temp2
     }
 }
+
+equalSign.addEventListener("click", () => {
+    numbers.secondNum = Number(operandOne.textContent);
+    let result = operate(numbers.firstNum, numbers.secondNum, operator);
+    console.log(result)
+    numbers.firstNum = result;
+    operandTwo.textContent = numbers.firstNum;
+    temp = 0;
+    operandOne.textContent = temp
+})
 
 getNumberValue(numbersCollection)
 getOperationSymbol(operationCollection);
